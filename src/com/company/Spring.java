@@ -1,10 +1,12 @@
+package com.company;
+
 import java.awt.*;    // Using AWT's Graphics and Color
 import javax.swing.*; // Using Swing's components and containers
 
 /**
  * A Bouncing Ball: Running animation via a custom thread
  */
-public class CGBouncingBall extends JFrame {
+public class Spring extends JFrame {
     // Define named-constants
     private static final int CANVAS_WIDTH = 640;
     private static final int CANVAS_HEIGHT = 480;
@@ -30,7 +32,7 @@ public class CGBouncingBall extends JFrame {
 
 
     // Constructor to setup the GUI components and event handlers
-    public CGBouncingBall() {
+    public Spring() {
         canvas = new DrawCanvas();
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
         this.setContentPane(canvas);
@@ -82,7 +84,7 @@ public class CGBouncingBall extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new CGBouncingBall(); // Let the constructor do the job
+                new Spring(); // Let the constructor do the job
             }
         });
     }
