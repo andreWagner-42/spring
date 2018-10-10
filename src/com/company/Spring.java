@@ -1,16 +1,13 @@
 package com.company;
 
+import javax.swing.*;
 import java.awt.*;    // Using AWT's Graphics and Color
-import javax.swing.*; // Using Swing's components and containers
 
-/**
- * A Bouncing Ball: Running animation via a custom thread
- */
 public class Spring extends JFrame {
     // Define named-constants
     private static final int CANVAS_WIDTH = 640;
     private static final int CANVAS_HEIGHT = 480;
-    private static final int UPDATE_INTERVAL = 1000; // milliseconds
+    private static final int UPDATE_INTERVAL = 10; // milliseconds
 
     private DrawCanvas canvas;  // the drawing canvas (an inner class extends JPanel)
 
@@ -42,29 +39,22 @@ public class Spring extends JFrame {
         this.setVisible(true);
 
         // Create a new thread to run update at regular interval
-        Thread updateThread = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    update();   // update the (x, y) position
-                    repaint();  // Refresh the JFrame. Called back paintComponent()
-                    try {
-                        // Delay and give other thread a chance to run
-                        Thread.sleep(UPDATE_INTERVAL);  // milliseconds
-                    } catch (InterruptedException ignore) {}
-                }
-            }
-        };
-        updateThread.start(); // called back run()
+        new Timer(UPDATE_INTERVAL, actionEvent -> {
+            update();   // update the (x, y) position
+            Toolkit.getDefaultToolkit().sync();
+            repaint();  // Refresh the JFrame. Called back paintComponent()
+        }).start();
     }
 
     // Update the (x, y) position of the moving object
     public void update() {
-
-        ySpeed += yAcceleration/2*UPDATE_INTERVAL;
-        yAcceleration = springConstant*y;
-        yDisplacement = ySpeed*UPDATE_INTERVAL+yAcceleration/2*UPDATE_INTERVAL*UPDATE_INTERVAL;
+        /*
+        ySpeed += yAcceleration / 2 * UPDATE_INTERVAL;
+        yAcceleration = springConstant * y;
+        yDisplacement = ySpeed * UPDATE_INTERVAL + yAcceleration / 2 * UPDATE_INTERVAL * UPDATE_INTERVAL;
         y += yDisplacement;
+        */
+        y += 1; // testing
     }
 
     // Define Inner class DrawCanvas, which is a JPanel used for custom drawing
@@ -78,14 +68,9 @@ public class Spring extends JFrame {
         }
     }
 
-    // The entry main method
     public static void main(String[] args) {
         // Run GUI codes in Event-Dispatching thread for thread safety
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Spring(); // Let the constructor do the job
-            }
-        });
+        // Let the constructor do the job
+        SwingUtilities.invokeLater(Spring::new);
     }
 }
