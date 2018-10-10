@@ -26,7 +26,7 @@ public class Spring extends JFrame {
     private double gravitationalForce = gravity*mass; // N
     private double springForce = springConstant*deflection; // N
     private double resultantForce = gravitationalForce+springForce; // N
-    private double update_interval = (double) UPDATE_INTERVAL/1000;
+    private double update_interval = (double) UPDATE_INTERVAL/1000; // seconds
     // Constructor to setup the GUI components and event handlers
     public Spring() {
         canvas = new DrawCanvas();
