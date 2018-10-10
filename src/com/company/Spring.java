@@ -13,21 +13,20 @@ public class Spring extends JFrame {
 
     // Attributes of moving object
     private int x = 100;     // top-left (x, y)
-    private int y = 100;
+    private int y = 200;
     private int size = 50;  // width and height
+    private double springLenght = 1;
+    private int mass = 1; // kg
+    private double gravity = 9.81; /// N/kg
+    private int springConstant = -100; // N/metres
+    private double position = 1; // metres
+    private double deflection = position-springLenght; // metres
     private double ySpeed = 0; // m/s
-    private double yAcceleration = 0;
-    private double yDisplacement = 0; // displacement compared to the last position
-    private double mass = 1; // kg
-    private double gravity = -9.81; // N/m
-    private double gravitationalForce = mass*gravity; // N
-    private double springLenght = 1; // m
-    private double springConstant = -100; // N/m
-    private double deflection = 0; // m
-    private double springForce = deflection*springConstant; // N
+    private double yAcceleration = 0; // m/s^^2
+    private double gravitationalForce = gravity*mass; // N
+    private double springForce = springConstant*deflection; // N
     private double resultantForce = gravitationalForce+springForce; // N
-
-
+    private double update_interval = (double) UPDATE_INTERVAL/1000;
     // Constructor to setup the GUI components and event handlers
     public Spring() {
         canvas = new DrawCanvas();
@@ -48,13 +47,13 @@ public class Spring extends JFrame {
 
     // Update the (x, y) position of the moving object
     public void update() {
-        /*
-        ySpeed += yAcceleration / 2 * UPDATE_INTERVAL;
-        yAcceleration = springConstant * y;
-        yDisplacement = ySpeed * UPDATE_INTERVAL + yAcceleration / 2 * UPDATE_INTERVAL * UPDATE_INTERVAL;
-        y += yDisplacement;
-        */
-        y += 1; // testing
+        deflection = position-springLenght;
+        springForce = deflection*springConstant;
+        resultantForce = gravitationalForce+springForce;
+        yAcceleration = resultantForce/mass;
+        ySpeed += yAcceleration/2*update_interval;
+        position += ySpeed*update_interval;
+        y = (int)(position*200);
     }
 
     // Define Inner class DrawCanvas, which is a JPanel used for custom drawing
